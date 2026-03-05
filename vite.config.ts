@@ -7,6 +7,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   base: "/Rentaprojection/",
   server: {
+    base: "/Rentaprojection",
     host: "::",
     port: 8080,
     hmr: {
