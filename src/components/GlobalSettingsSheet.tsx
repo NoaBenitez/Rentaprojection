@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { RotateCcw } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 import type { GlobalSettings } from "@/types/simulation";
 import { DEFAULT_SETTINGS } from "@/types/simulation";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -104,14 +105,21 @@ export function GlobalSettingsSheet({ open, onOpenChange, settings, onUpdate }: 
         { key: "seuilAlerteMargeArticle" as const, label: "Seuil alerte", unit: "%", tooltip: "Alerte si marge inférieure" },
       ],
     },
-    {
-      title: "Objectifs",
-      fields: [
-        { key: "margeBruteCible" as const, label: "Marge brute cible", unit: "%", tooltip: "Objectif marge brute minimum" },
-        { key: "margeNetteCible" as const, label: "Marge nette cible", unit: "%", tooltip: "Objectif marge nette minimum" },
-        { key: "seuilAlerteMargeNette" as const, label: "Seuil alerte nette", unit: "%", tooltip: "Alerte si marge nette sous ce seuil" },
-      ],
-    },
+  ];
+
+  const objectifsGeneraux = [
+    { key: "margeBruteCible" as const, label: "Marge brute cible", unit: "%", tooltip: "Objectif marge brute minimum" },
+    { key: "margeNetteCible" as const, label: "Marge nette cible", unit: "%", tooltip: "Objectif marge nette minimum" },
+    { key: "seuilAlerteMargeNette" as const, label: "Seuil alerte nette", unit: "%", tooltip: "Alerte si marge nette sous ce seuil" },
+  ];
+
+  const objectifsDetailles = [
+    { key: "margeCibleMO" as const, label: "Marge cible MO", unit: "%", tooltip: "Objectif marge sur main-d'oeuvre" },
+    { key: "margeCibleArticles" as const, label: "Marge cible articles", unit: "%", tooltip: "Objectif marge sur articles/fournitures" },
+    { key: "margeCibleSousTraitance" as const, label: "Marge cible sous-traitance", unit: "%", tooltip: "Objectif marge sur sous-traitance" },
+    { key: "margeCibleMatiere" as const, label: "Marge cible matiere", unit: "%", tooltip: "Objectif marge sur matiere premiere" },
+    { key: "margeNetteCible" as const, label: "Marge nette cible", unit: "%", tooltip: "Objectif marge nette minimum" },
+    { key: "seuilAlerteMargeNette" as const, label: "Seuil alerte nette", unit: "%", tooltip: "Alerte si marge nette sous ce seuil" },
   ];
 
   return (
@@ -142,6 +150,31 @@ export function GlobalSettingsSheet({ open, onOpenChange, settings, onUpdate }: 
               <Separator className="mt-3" />
             </div>
           ))}
+          <div>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Objectifs de marge</h3>
+            <div className="flex items-center justify-between py-2 mb-2">
+              <Label className="text-xs font-medium">Marge detaillee par categorie</Label>
+              <Switch
+                checked={settings.margeDetaillee}
+                onCheckedChange={(checked) => onUpdate({ ...settings, margeDetaillee: checked })}
+              />
+            </div>
+            <div className="space-y-0">
+              {(settings.margeDetaillee ? objectifsDetailles : objectifsGeneraux).map((f) => (
+                <SettingField
+                  key={f.key}
+                  label={f.label}
+                  value={settings[f.key]}
+                  unit={f.unit}
+                  tooltip={f.tooltip}
+                  defaultValue={DEFAULT_SETTINGS[f.key]}
+                  onChange={set(f.key)}
+                  onReset={reset(f.key)}
+                />
+              ))}
+            </div>
+            <Separator className="mt-3" />
+          </div>
           <Button variant="outline" className="w-full" onClick={() => onUpdate(DEFAULT_SETTINGS)}>
             <RotateCcw className="h-4 w-4 mr-2" />
             Tout réinitialiser

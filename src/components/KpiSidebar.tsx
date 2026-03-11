@@ -1,7 +1,8 @@
 import { formatCurrency, formatPercentage, getMarginColor } from "@/utils/calculations";
 import type { KPIData, GlobalSettings, TimeScale } from "@/types/simulation";
 import { getTimeScaleMultiplier, getTimeScaleSuffix } from "@/types/simulation";
-import { TrendingUp, TrendingDown, Target, DollarSign, BarChart3, Percent, Zap } from "lucide-react";
+import { TrendingUp, TrendingDown, Target, DollarSign, BarChart3, Percent, Zap, Wrench, Package, Users, Layers } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface KpiSidebarProps {
@@ -108,6 +109,42 @@ export function KpiSidebar({ kpis, settings, timeScale, dureeMois }: KpiSidebarP
         icon={Zap}
         tooltip="Retour sur investissement sur la durée du contrat"
       />
+
+      {settings.margeDetaillee && (
+        <>
+          <div className="px-4 py-2 border-b border-sidebar-border">
+            <div className="text-[9px] text-sidebar-muted uppercase tracking-widest">Marges par categorie</div>
+          </div>
+          <KpiItem
+            label="Marge MO"
+            value={formatPercentage(kpis.margeMOPct)}
+            icon={Users}
+            tooltip={`Marge sur main-d'oeuvre. Cible: ${settings.margeCibleMO}%`}
+            colorClass={getMarginColor(kpis.margeMOPct, settings.margeCibleMO, settings.margeCibleMO * 0.5)}
+          />
+          <KpiItem
+            label="Marge articles"
+            value={formatPercentage(kpis.margeArticlesPct)}
+            icon={Package}
+            tooltip={`Marge sur articles/fournitures. Cible: ${settings.margeCibleArticles}%`}
+            colorClass={getMarginColor(kpis.margeArticlesPct, settings.margeCibleArticles, settings.margeCibleArticles * 0.5)}
+          />
+          <KpiItem
+            label="Marge sous-traitance"
+            value={formatPercentage(kpis.margeSousTraitancePct)}
+            icon={Wrench}
+            tooltip={`Part sous-traitance / CA net. Cible: ${settings.margeCibleSousTraitance}%`}
+            colorClass={getMarginColor(-kpis.margeSousTraitancePct, -settings.margeCibleSousTraitance, -settings.margeCibleSousTraitance * 2)}
+          />
+          <KpiItem
+            label="Marge matiere"
+            value={formatPercentage(kpis.margeMatierePct)}
+            icon={Layers}
+            tooltip={`Marge sur matiere premiere. Cible: ${settings.margeCibleMatiere}%`}
+            colorClass={getMarginColor(kpis.margeMatierePct, settings.margeCibleMatiere, settings.margeCibleMatiere * 0.5)}
+          />
+        </>
+      )}
 
       {/* Bottom decorative element */}
       <div className="mt-auto px-4 py-4 border-t border-sidebar-border">

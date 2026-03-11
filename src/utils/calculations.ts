@@ -197,6 +197,18 @@ export function buildProfitAndLoss(
   const seuilRentabilite = calculateBreakEven(fixedCosts, variableMarginRate);
   const pointMortMois = caNet > 0 ? Math.ceil(seuilRentabilite / caNet) : 0;
 
+  // Per-category margins
+  const margeMO = caMO - (coutMO + coutAstreintes);
+  const margeMOPct = caMO > 0 ? (margeMO / caMO) * 100 : 0;
+
+  const margeArticles = caFournitures - coutAchats;
+  const margeArticlesPct = caFournitures > 0 ? (margeArticles / caFournitures) * 100 : 0;
+
+  const margeSousTraitancePct = caNet > 0 ? (-coutSousTraitance / caNet) * 100 : 0;
+
+  // Matiere = articles cost as % of their revenue (same as articles for now)
+  const margeMatierePct = margeArticlesPct;
+
   const totalInvestissement = totalCoutsDirects * dureeMois + totalFraisIndirects * dureeMois;
   const roiPct = totalInvestissement > 0 ? ((margeNette * dureeMois) / totalInvestissement) * 100 : 0;
 
@@ -237,6 +249,10 @@ export function buildProfitAndLoss(
     seuilRentabilite: seuilRentabilite === Infinity ? 0 : seuilRentabilite,
     pointMortMois,
     roiPct,
+    margeMOPct,
+    margeArticlesPct,
+    margeSousTraitancePct,
+    margeMatierePct,
   };
 
   return { lines, kpis };

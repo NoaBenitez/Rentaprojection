@@ -43,6 +43,11 @@ export interface GlobalSettings {
   margeBruteCible: number;
   margeNetteCible: number;
   seuilAlerteMargeNette: number;
+  margeDetaillee: boolean;
+  margeCibleMO: number;
+  margeCibleArticles: number;
+  margeCibleSousTraitance: number;
+  margeCibleMatiere: number;
 }
 
 // ===== TAB 1: PROSPECT =====
@@ -214,6 +219,10 @@ export interface KPIData {
   seuilRentabilite: number;
   pointMortMois: number;
   roiPct: number;
+  margeMOPct: number;
+  margeArticlesPct: number;
+  margeSousTraitancePct: number;
+  margeMatierePct: number;
 }
 
 export const DUREE_CONTRAT_MOIS: Record<string, number> = {
@@ -244,4 +253,9 @@ export const DEFAULT_SETTINGS: GlobalSettings = {
   margeBruteCible: 40,
   margeNetteCible: 15,
   seuilAlerteMargeNette: 8,
+  margeDetaillee: false,
+  margeCibleMO: 40,
+  margeCibleArticles: 30,
+  margeCibleSousTraitance: 15,
+  margeCibleMatiere: 25,
 };
