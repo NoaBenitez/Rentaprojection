@@ -24,7 +24,7 @@ export function AppHeader({ kpis, settings, timeScale, dureeMois, onTimeScaleCha
     <header className="h-16 bg-card border-b flex items-center justify-between px-5 flex-shrink-0">
       <div className="flex items-center gap-3">
         <img
-          src="/logopsl.png"
+          src="./logopsl.png"
           alt="Logo PSL"
           className="h-20 object-cover object-center"
           style={{ clipPath: "inset(8% 0)" }}
